@@ -1,0 +1,22 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}Books | Library {% endblock %}
+
+{% block addons %}
+  <a href="{% url 'book-create' %}" class="btn btn-sm btn-outline-info float-right">&plus; Add New Book</a>
+{% endblock addons %}
+
+{% block content %}
+	<h1>{{ book_type }}</h1>
+	<a href="{% url 'books' %}?q=available" class="btn btn-sm btn-outline-dark float-right">&#9910; Available Books</a>
+	<br>
+	{% if library_books %}
+		<ul class="list-group list-group-flush">
+			{% for book in library_books %}
+			<li class="list-group-item"><a href="{{ book.get_absolute_url }}">{{ book.title }}</a> ({{book.author}})</li>
+			{% endfor %}
+		</ul>
+	{% else %}
+		<p>Sorry! no books in the library.</p>
+	{% endif %}
+{% endblock %}

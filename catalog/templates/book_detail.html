@@ -1,0 +1,59 @@
+{% extends 'base_generic.html' %}
+{% load extra_tags %}
+
+{% block title %}{{ book.title|title }} | Book{% endblock %}
+
+{% block addons %}
+  <a href="{% url 'book-delete' book.pk %}" class="btn btn-sm btn-warning float-right">&#9938; Delete</a>
+  <p class="float-right">&nbsp;</p>
+  <a href="{% url 'book-update' book.pk %}" class="btn btn-sm btn-info float-right">&#9842; Update</a>
+{% endblock addons %}
+
+{% block content %}
+	<h1>Title: {{ book.title }} </h1>
+	<p><strong>Author:</strong> <a href="{{ book.author.get_absolute_url }}">{{ book.author }}</a></p> <!-- author detail link not yet defined -->
+	<p><strong>Summary:</strong> {{ book.summary }}</p>
+	<p><strong>ISBN:</strong> {{ book.isbn }}</p>
+	<p><strong>Language:</strong> {{ book.language.all|join:", " }}</p>
+	<p><strong>Genre:</strong> {{ book.genre.all|genre_merge|join:" | " }}</p>
+
+	<div class="section">
+		<h2>Reviews</h2>
+		<a id="review-btn" href="{% url 'linked_review_form' book.pk %}" class="btn btn-outline-info">Write a Review</a>
+		<br>
+		<div class="container">
+			{% if book.review_set.count == 0 %}
+				<p class="text-muted">No reviews avaliable.</p>
+			{% endif %}
+			{% for review in book.review_set.all %}
+				<p class="{% if review.review_polarity == 1 %}text-success{% else %}text-danger{% endif %}"><strong>Review: </strong>{{ review.review }} </p>
+				<p class="text-muted"><strong>By: </strong>{{ review.user }} </p>
+				<hr>
+				{% if review.user == user %}
+					<script>document.getElementById("review-btn").remove()</script>
+				{% endif %}
+			{% endfor %}
+		</div>
+	</div>
+	<div style="margin-left:20px;margin-top:20px">
+	    <h4>Copies</h4>
+	    {% if book.bookinstance_set.count == 0 %}
+	    	<p class="text-muted">No copies available.</p>
+	    {% endif %}
+	    {% for copy in book.bookinstance_set.all %}
+	    	<p class="{% if copy.status == 'a' %}text-success{% elif copy.status == 'm' %}text-danger{% else %}text-warning{% endif %}">
+		    	{{ copy.get_status_display }}
+		    	{% if copy.status == 'a' %}
+			    	<a href="{% url 'borrow-book' copy.pk %}" class="btn btn-sm btn-outline-info float-right">
+				    	&plus; Borrow Book</a>
+				   {% endif %}
+		    </p>
+	    	{% if copy.status == 'o' %}
+	    		<p class="text-warning"><strong>Due Date: </strong>{{ copy.due_back }}</p>
+	    	{% endif %}
+	    	<p><strong>Imprint: </strong>{{ copy.imprint }} </p>
+	    	<p class="text-muted"><strong>Id: </strong>{{ copy.id }}</p>
+	    	<hr>
+	    {% endfor %}
+	</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}Home | Library{% endblock %}
+
+{% block content %}
+	<h1>Local Library Home</h1>
+	<p>Welcome to <strong>Local Library</strong>, a website developed by <em>Kunal</em></p>
+
+	<h2>Dynamic Content</h2>
+	<p>The library has the following record counts:</p>
+	<ul class="list-group list-group-flush home-info">
+		<li class="list-group-item d-flex justify-content-between align-items-center">
+			<strong>Books: </strong>
+			<span class="badge badge-pills badge-primary">{{ num_books }}</span>
+		</li>
+		<li class="list-group-item d-flex justify-content-between align-items-center">
+			<strong>Love Books: </strong>
+			<span class="badge badge-pills badge-primary">{{ num_word_books }}</span>
+		</li>
+		<li class="list-group-item d-flex justify-content-between align-items-center">
+			<strong>Copies: </strong>
+			<span class="badge badge-pills badge-primary">{{ num_instances }}</span>
+		</li>
+		<li class="list-group-item d-flex justify-content-between align-items-center">
+			<strong>Copies Available: </strong>
+			<span class="badge badge-pills badge-primary">{{ num_instances_available }}</span>
+		</li>
+		<li class="list-group-item d-flex justify-content-between align-items-center">
+			<strong>Authors: </strong>
+			<span class="badge badge-pills badge-primary">{{ num_authors }}</span>
+		</li>
+		<li class="list-group-item d-flex justify-content-between align-items-center">
+			<strong>Genres: </strong>
+			<span class="badge badge-pills badge-primary">{{ num_genres }}</span>
+		</li>
+	</ul>
+	<p>You have visited this page {{ num_visits }} time{{ num_visits|pluralize }}.</p>
+{% endblock %}

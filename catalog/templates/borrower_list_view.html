@@ -1,0 +1,19 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}My Books | Library {% endblock %}
+
+{% block content %}
+	<h1>Books Borrowed</h1>
+	{% if borrowed_books %}
+		<ul class="list-group list-group-flush">
+			{% for b_book in borrowed_books %}
+			<li class="list-group-item {% if b_book.is_overdue %}text-danger{% endif %}">
+				<a href="{% url 'book-detail' b_book.book.pk %}">{{ b_book.book.title }}</a> ({{b_book.due_back}}) 
+				<a href="{% url 'return-book' b_book.pk %}" class="btn btn-sm btn-outline-warning float-right">&#8634; Return Book</a>
+			</li>
+			{% endfor %}
+		</ul>
+	{% else %}
+		<p>There are no books borrowed.</p>
+	{% endif %}
+{% endblock %}

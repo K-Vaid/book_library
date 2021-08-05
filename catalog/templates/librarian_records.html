@@ -1,0 +1,20 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}Borrowed Books | Library {% endblock %}
+
+{% block content %}
+	<h1>All Books Borrowed</h1>
+	<br><br>
+	{% if librarian_records %}
+		<ul class="list-group list-group-flush">
+			{% for b_book in librarian_records %}
+			<li class="list-group-item d-flex justify-content-between align-items-center {% if b_book.is_overdue %}list-group-item-danger{% endif %}">
+				<span><a href="{% url 'book-detail' b_book.book.pk %}">{{ b_book.book.title }}</a> ({{b_book.due_back}}) - {{ b_book.borrower.username }}</span>
+				<span class="badge"><a href="{% url 'renew-book-librarian' b_book.pk %}" class="btn btn-info">Update</a></span>
+			</li>
+			{% endfor %}
+		</ul>
+	{% else %}
+		<p>There are no books borrowed.</p>
+	{% endif %}
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}Renew: {{ book_instance.book.title }} | Book {% endblock %}
+
+
+{% block content %}
+<h1>Renew: {{ book_instance.book.title }} </h1>
+<br>
+<a href="{{ request.META.HTTP_REFERER }}" class="text-info">&larr; back</a><br>
+<br>
+
+<div class="row">
+	<div class="col-md-2">
+		<span class="font-weight-bold">Borrower:</span>
+	</div>
+	<div class="col-md-8">
+		<p> {{ book_instance.borrower }} </p>	
+	</div>
+	<div class="col-md-2"></div>
+</div>
+<div class="row">
+	<div class="col-md-2">
+		<span class="font-weight-bold {% if book_instance.is_overdue %}text-danger{% endif %}">Due Date:</span>
+	</div>
+	<div class="col-md-8">
+		<p {% if book_instance.is_overdue %} class="text-danger"{% endif %}> {{ book_instance.due_back }} </p>	
+	</div>
+	<div class="col-md-2"></div>
+</div>
+
+<form action="" method="POST">
+	{% csrf_token %}
+	<div class="row">
+		<div class="col-md-2">
+			<span class="font-weight-bold">{{ form.renewal_date.label_tag }}</span>
+		</div>
+		<div class="col-md-8">
+			<p> {{ form.renewal_date }} <br> <em class="text-muted">{{ form.renewal_date.help_text|safe }}</em></p>
+			{{ form.renewal_date.errors }}
+		</div>
+		<div class="col-md-2"></div>
+	</div>
+	<input type="submit" class="btn btn-lg btn-success" value="Submit">
+</form>
+{% endblock %}

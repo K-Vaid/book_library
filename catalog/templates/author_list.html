@@ -1,0 +1,23 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}Authors | Library {% endblock %}
+
+{% block addons %}
+  <a href="{% url 'author-create' %}" class="btn btn-sm btn-outline-info float-right">&plus; Add Author</a>
+{% endblock addons %}
+
+{% block content %}
+	<h1>Authors</h1><br>
+	{% if author_list %}
+		<ul class="list-group list-group-flush">
+			{% for author in author_list %}
+			<li class="list-group-item">
+				<a href="{{ author.get_absolute_url }}">{{ author.first_name }} {{ author.last_name }} </a> 
+				({{ author.date_of_birth }} - {% if author.date_of_death %}{{ author.date_of_death }}{% endif %})
+			</li>
+			{% endfor %}
+		</ul>
+	{% else %}
+		<p>Sorry! no authors avaliable in the library.</p>
+	{% endif %}
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}Genre: {{ genre.name }} | Library{% endblock %}
+
+{% block content %}
+	<h1>Genre: {{ genre.name }} </h1>
+
+	<div style="margin-left:20px;margin-top:20px">
+	    {% for book in book_genre %}
+	    	<p><a href="{{ book.get_absolute_url }}">{{ book.title }}</a><br>{{ book.summary }} </p>
+	    	<hr>
+	    {% endfor %}
+	</div>
+{% endblock %}

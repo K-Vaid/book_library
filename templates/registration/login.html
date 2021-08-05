@@ -1,0 +1,45 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+
+	{% if form.errors %}
+		{{ form.non_field_errors }}
+	{% endif %}
+
+	{% if next %}
+		{% if user.is_authenticated %}
+			<p class="text-muted">Your account dosen't have access to this page.<br>
+			To proceed, please login with different account.</p>
+		{% else %}
+			<p class="text-info">Please login to view this page.</p>
+		{% endif %}
+	{% endif %}
+
+	<h1>Member Login</h1><br>
+
+	<form action="{% url 'login' %}" method="POST">
+		{% csrf_token %}
+		{% for field in form %}
+	      <div class="row">
+	        <div class="col-md-3">
+	          <span class="font-weight-bold">{{ field.label_tag }} </span>
+	        </div>
+	        <div class="col-md-9">
+	          <p>{{ field }} <br> <em class="text-muted">{{ field.help_text|safe }}</em> </p>
+	          {{ field.errors }}
+	        </div>
+	        <!-- <div class="col-md-2"></div> -->
+	      </div>
+	    {% endfor %}
+		<!-- <input type="submit" value="Login"> -->
+		<input type="hidden" name="next" value="{{ next }}" >
+		<button type="submit" class="btn btn-primary btn-lg">Login</button>
+	</form>
+	<br>
+
+	{# Assumes you setup the password_reset view in your URLconf #}
+	<p class="font-italic float-left"><a href="{% url 'password_reset' %}">Lost Password?</a></p>
+	<p class="font-italic float-left">&nbsp;&nbsp;</p>
+	<p class="font-italic float-left">New Member (<a href="{% url 'member-signup' %}">Sign Up</a>)</p>
+
+	{% endblock %}
